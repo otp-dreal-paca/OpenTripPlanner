@@ -43,6 +43,37 @@ otp.analyst.Population = otp.Class({
     },
 
     /**
+     * Load population from server pointset.
+     */
+    loadFromServer : function(id, options) {
+        var thisPl = this;
+        options = $.extend({
+            async : false
+        }, options);
+        this._loadAjax('/otp/pointsets/' + id, options, function(payload) {
+            $.each(payload.features, function(index, item) {
+                var item2 = {
+                    location : {
+                        lat : item.geometry.coordinates[1],
+                        lng : item.geometry.coordinates[0]
+                    },
+                    w : 1.0
+                };
+                for (var propName in item.properties.structured) {
+                    // Hack: take first numeric property as w value
+                    var propValue = item.properties.structured[propName];
+                    if ($.isNumeric(propValue)) {
+                        item2.w = propValue;
+                        break;
+                    }
+                }
+                thisPl.data.push(item2);
+            });
+        });
+        return this;
+    },
+
+    /**
      * Load population from CSV data.
      */
     loadFromCsv : function(csvUrl, options) {
@@ -91,9 +122,7 @@ otp.analyst.Population = otp.Class({
         $.ajax({
             url : url,
             success : function(result) {
-                if (typeof result === 'string') {
-                    dataCallback(result);
-                }
+                dataCallback(result);
                 thisPl.onLoadCallbacks.fire(thisPl);
             },
             async : options.async
@@ -177,3 +206,15 @@ otp.analyst.Population = otp.Class({
         return table;
     },
 });
+
+/**
+ * Return the list of populations from the server (pointsets interface)
+ */
+otp.analyst.Population.listServerPointSets = function(dataCallback) {
+    var payload = $.ajax({
+        url : '/otp/pointsets',
+        success : function(result) {
+            dataCallback(result);
+        }
+    });
+};
