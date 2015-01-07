@@ -60,50 +60,6 @@ $(function() {
         "Isochrones" : gui.isochronesLayerGroup,
     }).addTo(gui.map);
 
-    /* Load populations and add markers */
-    function addPopulationMarkers(population, pathOptions) {
-        for (var i = 0; i < population.size(); i++) {
-            var item = population.get(i);
-            gui.populationLayerGroup.addLayer(L.circleMarker(item.location, pathOptions));
-        }
-    }
-    gui.colleges = new otp.analyst.Population();
-    gui.colleges.loadFromCsv("colleges.csv", {
-        lonColName : "X",
-        latColName : "Y",
-        nameColName : "DESIGNATIO"
-    }).onLoad(function(population) {
-        addPopulationMarkers(population, {
-            radius : 4,
-            color : "#000",
-            opacity : 0.8,
-            fillOpacity : 0.8,
-            fillColor : "#C0C"
-        });
-    });
-    // Reload colleges, this time weighting on # of places
-    gui.collegesPlaces = new otp.analyst.Population();
-    gui.collegesPlaces.loadFromCsv("colleges.csv", {
-        lonColName : "X",
-        latColName : "Y",
-        nameColName : "DESIGNATIO",
-        weightColName : "TOTAL"
-    });
-    gui.lycees = new otp.analyst.Population();
-    gui.lycees.loadFromCsv("lycees.csv", {
-        lonColName : "X",
-        latColName : "Y",
-        nameColName : "DESIGNATIO"
-    }).onLoad(function(population) {
-        addPopulationMarkers(population, {
-            radius : 4,
-            color : "#000",
-            opacity : 0.8,
-            fillOpacity : 0.8,
-            fillColor : "#F00"
-        });
-    });
-
     /* Select client-wide locale */
     otp.setLocale(otp.locale.French);
 
@@ -138,23 +94,7 @@ $(function() {
             gui.layer.bringToFront(); // TODO Leaflet bug?
             /* Re-enable refresh button */
             $("#refresh").prop("disabled", false);
-
-            /* Update scores, cutoff depends on data we have available. */
-            var cutoff1 = params1.zDataType == "BOARDINGS" ? 1.5 : params1.zDataType == "WALK_DISTANCE" ? 400 : 1800;
-            var cutoff2 = params1.zDataType == "BOARDINGS" ? 2.5 : params1.zDataType == "WALK_DISTANCE" ? 800 : 3600;
-            var labels = params1.zDataType == "BOARDINGS" ? [ "<1", "<2 corresp." ]
-                    : params1.zDataType == "WALK_DISTANCE" ? [ "<400m", "<800m" ] : [ "<30mn", "<1h" ];
-            var scorer = new otp.analyst.Scoring();
-            var edge1 = otp.analyst.Scoring.stepEdge(cutoff1);
-            var edge2 = otp.analyst.Scoring.stepEdge(cutoff2);
-            $("#cutoff1").text(labels[0]);
-            $("#cutoff2").text(labels[1]);
-            $("#c1").text(scorer.score(timeGrid, gui.colleges, edge1, 1.0));
-            $("#c2").text(scorer.score(timeGrid, gui.colleges, edge2, 1.0));
-            $("#cp1").text(scorer.score(timeGrid, gui.collegesPlaces, edge1, 1.0));
-            $("#cp2").text(scorer.score(timeGrid, gui.collegesPlaces, edge2, 1.0));
-            $("#l1").text(scorer.score(timeGrid, gui.lycees, edge1, 1.0));
-            $("#l2").text(scorer.score(timeGrid, gui.lycees, edge2, 1.0));
+            refreshPopulation();
         });
 
         /* Check if we should display vector isochrones. */
@@ -186,12 +126,38 @@ $(function() {
         }
     }
 
+    function refreshPopulation() {
+        $("#count").text("N/A");
+        if (!gui.population || !gui.timeGrid.isLoaded())
+            return;
+        /* Update score, cutoff depends on data we have available. */
+        var cutoff = 3600;
+        var scorer = new otp.analyst.Scoring();
+        var edge = otp.analyst.Scoring.stepEdge(cutoff);
+        $("#count").text(scorer.score(gui.timeGrid, gui.population, edge, 1.0));
+    }
+
     /* Plug the refresh callback function. */
     gui.widget1.onRefresh(refresh);
     $("#refresh").click(refresh);
     $("#isoEnable").click(refresh);
     /* Refresh to force an initial load. */
     gui.widget1.refresh();
+
+    /* Load population list from server pointsets */
+    var populationDropdown = $("#populations");
+    otp.analyst.Population.listServerPointSets(function(pointsets) {
+        $.each(pointsets, function(index, pointset) {
+            populationDropdown.append($("<option />").val(pointset.id).text(pointset.id));
+        });
+        populationDropdown.trigger("change");
+    });
+    gui.population = null;
+    populationDropdown.change(function() {
+        gui.population = new otp.analyst.Population();
+        gui.population.loadFromServer(this.value);
+        refreshPopulation();
+    });
 
     /* Download image button */
     $('#downloadIsoimage').click(function() {
