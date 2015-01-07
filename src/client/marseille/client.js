@@ -171,7 +171,8 @@ $(function() {
                             color: 'red',
                             fillColor: '#f03',
                             fillOpacity: 0.5,
-                            radius: 10 * ind.w / gui.population.getMaxW()
+                            // Sqrt to have circle surface proportional to W
+                            radius: 10 * Math.sqrt(ind.w / gui.population.getMaxW())
                         });
                         gui.populationLayerGroup.addLayer(circle);
                     }
