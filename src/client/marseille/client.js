@@ -135,6 +135,7 @@ $(function() {
         var scorer = new otp.analyst.Scoring();
         var edge = otp.analyst.Scoring.stepEdge(cutoff);
         $("#count").text(scorer.score(gui.timeGrid, gui.population, edge, 1.0));
+        var histo = scorer.histogram(gui.timeGrid, gui.population, 0, 3600, 120);
     }
 
     /* Plug the refresh callback function. */
@@ -144,20 +145,23 @@ $(function() {
     /* Refresh to force an initial load. */
     gui.widget1.refresh();
 
-    /* Load population list from server pointsets */
-    var populationDropdown = $("#populations");
-    otp.analyst.Population.listServerPointSets(function(pointsets) {
-        $.each(pointsets, function(index, pointset) {
-            populationDropdown.append($("<option />").val(pointset.id).text(pointset.id));
+    /* Initialize populations */
+    initPopulations(function(result) {
+        gui.populations = result;
+        var populationDropdown = $("#populations");
+        $.each(gui.populations, function(id, popDesc) {
+            populationDropdown.append($("<option />").val(id).text(popDesc.name));
+        });
+        populationDropdown.change(function() {
+            var popDesc = gui.populations[this.value];
+            gui.population = popDesc.load();
+            gui.population.onLoad(function() {
+                refreshPopulation();
+            });
         });
         populationDropdown.trigger("change");
     });
     gui.population = null;
-    populationDropdown.change(function() {
-        gui.population = new otp.analyst.Population();
-        gui.population.loadFromServer(this.value);
-        refreshPopulation();
-    });
 
     /* Download image button */
     $('#downloadIsoimage').click(function() {
@@ -186,3 +190,80 @@ $(function() {
         $("#contactContent").dialog().show();
     });
 });
+
+function initPopulations(callback) {
+    function loadFromCsv(filename, options) {
+        var pop = new otp.analyst.Population();
+        pop.loadFromCsv(filename, options);
+        return pop;
+    }
+    function loadFromServer(id) {
+        var pop = new otp.analyst.Population();
+        pop.loadFromServer(id);
+        return pop;
+    }
+    var ret = {};
+    ret["individus"] = {
+        name : "Individus (nombre)",
+        load : function() {
+            return loadFromCsv("data/insee.csv", {
+                latColName : "y",
+                lonColName : "x",
+                weightColName : "ind"
+            });
+        },
+    };
+    ret["revenus"] = {
+            name : "Revenus (cumul)",
+            load : function() {
+                return loadFromCsv("data/insee.csv", {
+                    latColName : "y",
+                    lonColName : "x",
+                    weightColName : "ind_srf_sum"
+                });
+            },
+        };
+    ret["nb_lycees"] = {
+        name : "Lycées (nombre)",
+        load : function() {
+            return loadFromCsv("data/lycees.csv", {
+                latColName : "Y",
+                lonColName : "X",
+                nameColName : "DESIGNATIO"
+            });
+        },
+    };
+    ret["nb_colleges"] = {
+        name : "Collèges (nombre)",
+        load : function() {
+            return loadFromCsv("data/colleges.csv", {
+                latColName : "Y",
+                lonColName : "X",
+                nameColName : "DESIGNATIO"
+            });
+        }
+    };
+    ret["pl_colleges"] = {
+        name : "Collèges (places)",
+        load : function() {
+            return loadFromCsv("data/colleges.csv", {
+                latColName : "Y",
+                lonColName : "X",
+                nameColName : "DESIGNATIO",
+                weightColName : "TOTAL_R"
+            });
+        }
+    };
+    otp.analyst.Population.listServerPointSets(function(pointsets) {
+        $.each(pointsets, function(index, pointset) {
+            ret[pointset.id] = {
+                name : pointset.id,
+                load : function() {
+                    return loadFromServer(pointset.id);
+                }
+            };
+        });
+        callback(ret);
+    });
+
+}
