@@ -26,6 +26,7 @@ otp.analyst.Population = otp.Class({
     initialize : function() {
         this.data = [];
         this.onLoadCallbacks = $.Callbacks();
+        this.maxW = 0.0;
     },
 
     /**
@@ -36,7 +37,7 @@ otp.analyst.Population = otp.Class({
         this._loadAjax(jsonUrl, options, function(payload) {
             payload = $.parseJSON(payload);
             for (var i = 0; i < payload.length; i++) {
-                thisPl.data.push(payload[i]);
+                thisPl.add(payload[i]);
             }
         });
         return this;
@@ -67,7 +68,7 @@ otp.analyst.Population = otp.Class({
                         break;
                     }
                 }
-                thisPl.data.push(item2);
+                thisPl.add(item2);
             });
         });
         return this;
@@ -108,7 +109,7 @@ otp.analyst.Population = otp.Class({
                 };
                 if (nameCol)
                     item.name = payload[row][nameCol];
-                thisPl.data.push(item);
+                thisPl.add(item);
             }
         });
         return this;
@@ -143,7 +144,17 @@ otp.analyst.Population = otp.Class({
      */
     add : function(poi) {
         this.data.push(poi);
+        if (poi.w > this.maxW) {
+            this.maxW = poi.w;
+        }
         return this;
+    },
+
+    /**
+     * Return the max weight of all individuals.
+     */
+    getMaxW : function() {
+        return this.maxW;
     },
 
     /**
@@ -151,7 +162,7 @@ otp.analyst.Population = otp.Class({
      * 
      * @return The number of elements in the list.
      */
-    size : function(poi) {
+    size : function() {
         return this.data.length;
     },
 
