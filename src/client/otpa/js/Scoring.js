@@ -51,7 +51,6 @@ otp.analyst.Scoring = otp.Class({
         for (var i = 0; i < Math.floor((max - min) / step); i++) {
             histo[i] = 0.0;
         }
-        console.log(histo);
         for (var i = 0; i < population.size(); i++) {
             var poi = population.get(i);
             // Default POI weight is 1
@@ -62,7 +61,6 @@ otp.analyst.Scoring = otp.Class({
                 histo[index] = histo[index] + poiW * 1.0;
             }
         }
-        console.log(histo);
         return histo;
     }
 });
