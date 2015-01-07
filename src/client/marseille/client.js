@@ -94,7 +94,7 @@ $(function() {
             gui.layer.bringToFront(); // TODO Leaflet bug?
             /* Re-enable refresh button */
             $("#refresh").prop("disabled", false);
-            refreshPopulation();
+            refreshHisto();
         });
 
         /* Check if we should display vector isochrones. */
@@ -126,16 +126,22 @@ $(function() {
         }
     }
 
-    function refreshPopulation() {
-        $("#count").text("N/A");
+    function refreshHisto() {
+        d3.select("#chart").selectAll("div").remove();
         if (!gui.population || !gui.timeGrid.isLoaded())
             return;
-        /* Update score, cutoff depends on data we have available. */
-        var cutoff = 3600;
+        if (gui.widget1.getParameters().zDataType != "TIME")
+            return;
+        /* Display histogram using D3 */
         var scorer = new otp.analyst.Scoring();
-        var edge = otp.analyst.Scoring.stepEdge(cutoff);
-        $("#count").text(scorer.score(gui.timeGrid, gui.population, edge, 1.0));
-        var histo = scorer.histogram(gui.timeGrid, gui.population, 0, 3600, 120);
+        var histo = scorer.histogram(gui.timeGrid, gui.population, 0, 3600, 300);
+        var x = d3.scale.linear().domain([ 0, d3.max(histo) ]).range([ 0, 80 ]);
+        var fmt = d3.format(".02f");
+        d3.select("#chart").selectAll("div").data(histo).enter().append("div").style("width", function(d) {
+            return x(d) + "%";
+        }).text(function(d) {
+            return fmt(d);
+        });
     }
 
     /* Plug the refresh callback function. */
@@ -156,7 +162,7 @@ $(function() {
             var popDesc = gui.populations[this.value];
             gui.population = popDesc.load();
             gui.population.onLoad(function() {
-                refreshPopulation();
+                refreshHisto();
             });
         });
         populationDropdown.trigger("change");
@@ -213,16 +219,26 @@ function initPopulations(callback) {
             });
         },
     };
+    ret["emplois"] = {
+        name : "Emplois (nombre)",
+        load : function() {
+            return loadFromCsv("data/geoetab13.csv", {
+                latColName : "lat",
+                lonColName : "lon",
+                weightColName : "emplois"
+            });
+        },
+    };
     ret["revenus"] = {
-            name : "Revenus (cumul)",
-            load : function() {
-                return loadFromCsv("data/insee.csv", {
-                    latColName : "y",
-                    lonColName : "x",
-                    weightColName : "ind_srf_sum"
-                });
-            },
-        };
+        name : "Revenus ménages (eur)",
+        load : function() {
+            return loadFromCsv("data/insee.csv", {
+                latColName : "y",
+                lonColName : "x",
+                weightColName : "ind_srf_sum"
+            });
+        },
+    };
     ret["nb_lycees"] = {
         name : "Lycées (nombre)",
         load : function() {

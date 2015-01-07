@@ -13,6 +13,7 @@
 	type="text/css" media="all" />
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="client.css" />
 </head>
@@ -32,6 +33,11 @@
 			<button id="refresh">Rafraîchir</button>
 		</p>
 
+		<h2>Indicateurs</h2>
+		<select id="populations"></select>
+		<p>Histogramme (tranche 5mns):</p>
+		<div id="chart" class="histogram"></div>
+
 		<h2>Légende</h2>
 		<canvas id="legend" width="300" height="16"></canvas>
 
@@ -44,12 +50,6 @@
 				value="30;60" />mns
 			</label> <label><input id="isoEnable" type="checkbox" /> Afficher</label>
 			<button id="downloadIsoVector">Télécharger isochrone GeoJSON</button>
-		</p>
-
-		<h2>Indicateurs</h2>
-		<select id="populations"></select>
-		<p>
-			Cumul (30mn): <span id="count"></span>
 		</p>
 	</div>
 	<div id="map"></div>
