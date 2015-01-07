@@ -163,6 +163,19 @@ $(function() {
             gui.population = popDesc.load();
             gui.population.onLoad(function() {
                 refreshHisto();
+                gui.populationLayerGroup.clearLayers();
+                if (gui.population.size() < 1000) {
+                    for (var i = 0; i < gui.population.size(); i++) {
+                        var ind = gui.population.get(i);
+                        var circle = L.circleMarker(ind.location, {
+                            color: 'red',
+                            fillColor: '#f03',
+                            fillOpacity: 0.5,
+                            radius: 10 * ind.w / gui.population.getMaxW()
+                        });
+                        gui.populationLayerGroup.addLayer(circle);
+                    }
+                }
             });
         });
         populationDropdown.trigger("change");
@@ -266,7 +279,7 @@ function initPopulations(callback) {
                 latColName : "Y",
                 lonColName : "X",
                 nameColName : "DESIGNATIO",
-                weightColName : "TOTAL_R"
+                weightColName : "TOTAL"
             });
         }
     };
