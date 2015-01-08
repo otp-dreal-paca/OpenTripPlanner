@@ -49,6 +49,7 @@ $(function() {
     gui.populationLayerGroup = new L.LayerGroup([]);
     gui.map.addLayer(gui.gradientLayerGroup);
     gui.map.addLayer(gui.isochronesLayerGroup);
+    gui.map.addLayer(gui.populationLayerGroup);
 
     /* Add controls to the map */
     L.control.layers({
@@ -167,14 +168,14 @@ $(function() {
                 if (gui.population.size() < 1000) {
                     for (var i = 0; i < gui.population.size(); i++) {
                         var ind = gui.population.get(i);
-                        var circle = L.circleMarker(ind.location, {
+                        var circleMarker = L.circleMarker(ind.location, {
                             color: 'red',
                             fillColor: '#f03',
                             fillOpacity: 0.5,
                             // Sqrt to have circle surface proportional to W
                             radius: 10 * Math.sqrt(ind.w / gui.population.getMaxW())
-                        });
-                        gui.populationLayerGroup.addLayer(circle);
+                        }).bindPopup(ind.name);
+                        gui.populationLayerGroup.addLayer(circleMarker);
                     }
                 }
             });
@@ -226,7 +227,7 @@ function initPopulations(callback) {
     ret["individus"] = {
         name : "Individus (nombre)",
         load : function() {
-            return loadFromCsv("data/insee.csv", {
+            return loadFromCsv("data/insee_pop.csv", {
                 latColName : "y",
                 lonColName : "x",
                 weightColName : "ind"
@@ -246,7 +247,7 @@ function initPopulations(callback) {
     ret["revenus"] = {
         name : "Revenus ménages (eur)",
         load : function() {
-            return loadFromCsv("data/insee.csv", {
+            return loadFromCsv("data/insee_revenus.csv", {
                 latColName : "y",
                 lonColName : "x",
                 weightColName : "ind_srf_sum"
@@ -284,6 +285,66 @@ function initPopulations(callback) {
             });
         }
     };
+    ret["mediatheques"] = {
+            name : "Bibliothèques/Médiathèques (nombre)",
+            load : function() {
+                return loadFromCsv("data/mediatheques13.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
+    ret["musees"] = {
+            name : "Musées (nombre)",
+            load : function() {
+                return loadFromCsv("data/musees13.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
+    ret["culture"] = {
+            name : "Centre culturels (nombre)",
+            load : function() {
+                return loadFromCsv("data/culture13.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
+    ret["pompiers"] = {
+            name : "Caserne pompiers (nombre)",
+            load : function() {
+                return loadFromCsv("data/pompiers.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
+    ret["wifi"] = {
+            name : "Bornes WIFI (nombre)",
+            load : function() {
+                return loadFromCsv("data/wifi.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
+    ret["sport"] = {
+            name : "Equipement sportif (nombre)",
+            load : function() {
+                return loadFromCsv("data/eqsport.csv", {
+                    latColName : "lat",
+                    lonColName : "lon",
+                    nameColName : "nom"
+                });
+            }
+        };
     otp.analyst.Population.listServerPointSets(function(pointsets) {
         $.each(pointsets, function(index, pointset) {
             ret[pointset.id] = {
