@@ -20,7 +20,8 @@
 
 <body>
 	<div id="toolbox">
-		<h1>Accessibilité au territoire et desserte des transports dans la métropole Aix-Marseille-Provence</h1>
+		<h1>Accessibilité au territoire et desserte des transports dans
+			la métropole Aix-Marseille-Provence</h1>
 
 		<p>
 			<button id="about">A propos</button>
@@ -32,11 +33,6 @@
 		<p>
 			<button id="refresh">Rafraîchir</button>
 		</p>
-
-		<h2>Indicateurs</h2>
-		<select id="populations"></select>
-		<p>Histogramme (tranche 5mns):</p>
-		<div id="chart" class="histogram"></div>
 
 		<h2>Légende</h2>
 		<canvas id="legend" width="300" height="16"></canvas>
@@ -51,6 +47,12 @@
 			</label> <label><input id="isoEnable" type="checkbox" /> Afficher</label>
 			<button id="downloadIsoVector">Télécharger isochrone GeoJSON</button>
 		</p>
+
+		<h2>Indicateurs</h2>
+		<select id="populations"></select>
+		<p>Histogramme (tranche 5mns):</p>
+		<div id="chart" class="histogram"></div>
+
 	</div>
 	<div id="map"></div>
 
