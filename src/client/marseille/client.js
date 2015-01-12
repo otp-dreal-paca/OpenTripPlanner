@@ -142,13 +142,7 @@ $(function() {
         /* Display histogram using D3 */
         var scorer = new otp.analyst.Scoring();
         var histo = scorer.histogram(gui.timeGrid, gui.population, 0, 3600, 300);
-        var x = d3.scale.linear().domain([ 0, d3.max(histo) ]).range([ 0, 80 ]);
-        var fmt = d3.format(".02f");
-        d3.select("#chart").selectAll("div").data(histo).enter().append("div").style("width", function(d) {
-            return x(d) + "%";
-        }).text(function(d) {
-            return fmt(d);
-        });
+        displayHistogram(histo, gui.populationDescriptor);
     }
 
     /* Plug the refresh callback function. */
@@ -166,8 +160,8 @@ $(function() {
             populationDropdown.append($("<option />").val(id).text(popDesc.name));
         });
         populationDropdown.change(function() {
-            var popDesc = gui.populations[this.value];
-            gui.population = popDesc.load();
+            gui.populationDescriptor = gui.populations[this.value];
+            gui.population = gui.populationDescriptor.load();
             gui.population.onLoad(function() {
                 refreshHisto();
                 gui.populationLayerGroup.clearLayers();
@@ -175,11 +169,11 @@ $(function() {
                     for (var i = 0; i < gui.population.size(); i++) {
                         var ind = gui.population.get(i);
                         var circleMarker = L.circleMarker(ind.location, {
-                            color: 'red',
-                            fillColor: '#f03',
-                            fillOpacity: 0.5,
+                            color : 'red',
+                            fillColor : '#f03',
+                            fillOpacity : 0.5,
                             // Sqrt to have circle surface proportional to W
-                            radius: 10 * Math.sqrt(ind.w / gui.population.getMaxW())
+                            radius : 10 * Math.sqrt(ind.w / gui.population.getMaxW())
                         }).bindPopup(ind.name);
                         gui.populationLayerGroup.addLayer(circleMarker);
                     }
@@ -231,7 +225,7 @@ function initPopulations(callback) {
     }
     var ret = {};
     ret["individus"] = {
-        name : "Individus (nombre)",
+        name : "Population (nb individus)",
         load : function() {
             return loadFromCsv("data/insee_pop.csv", {
                 latColName : "y",
@@ -249,16 +243,7 @@ function initPopulations(callback) {
                 weightColName : "emplois"
             });
         },
-    };
-    ret["revenus"] = {
-        name : "Revenus ménages (eur)",
-        load : function() {
-            return loadFromCsv("data/insee_revenus.csv", {
-                latColName : "y",
-                lonColName : "x",
-                weightColName : "ind_srf_sum"
-            });
-        },
+        numberFormat : ".0f",
     };
     ret["nb_lycees"] = {
         name : "Lycées (nombre)",
@@ -292,65 +277,35 @@ function initPopulations(callback) {
         }
     };
     ret["mediatheques"] = {
-            name : "Bibliothèques/Médiathèques (nombre)",
-            load : function() {
-                return loadFromCsv("data/mediatheques13.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
+        name : "Bibliothèques/Médiathèques (nombre)",
+        load : function() {
+            return loadFromCsv("data/mediatheques13.csv", {
+                latColName : "lat",
+                lonColName : "lon",
+                nameColName : "nom"
+            });
+        }
+    };
     ret["musees"] = {
-            name : "Musées (nombre)",
-            load : function() {
-                return loadFromCsv("data/musees13.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
+        name : "Musées (nombre)",
+        load : function() {
+            return loadFromCsv("data/musees13.csv", {
+                latColName : "lat",
+                lonColName : "lon",
+                nameColName : "nom"
+            });
+        }
+    };
     ret["culture"] = {
-            name : "Centre culturels (nombre)",
-            load : function() {
-                return loadFromCsv("data/culture13.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
-    ret["pompiers"] = {
-            name : "Caserne pompiers (nombre)",
-            load : function() {
-                return loadFromCsv("data/pompiers.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
-    ret["wifi"] = {
-            name : "Bornes WIFI (nombre)",
-            load : function() {
-                return loadFromCsv("data/wifi.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
-    ret["sport"] = {
-            name : "Equipement sportif (nombre)",
-            load : function() {
-                return loadFromCsv("data/eqsport.csv", {
-                    latColName : "lat",
-                    lonColName : "lon",
-                    nameColName : "nom"
-                });
-            }
-        };
+        name : "Centre culturels (nombre)",
+        load : function() {
+            return loadFromCsv("data/culture13.csv", {
+                latColName : "lat",
+                lonColName : "lon",
+                nameColName : "nom"
+            });
+        }
+    };
     otp.analyst.Population.listServerPointSets(function(pointsets) {
         $.each(pointsets, function(index, pointset) {
             ret[pointset.id] = {
@@ -362,5 +317,23 @@ function initPopulations(callback) {
         });
         callback(ret);
     });
+}
 
+function displayHistogram(histo, popDesc) {
+    var x = d3.scale.linear().domain([ 0, d3.max(histo, function(d) {
+        return +d.w
+    }) ]).range([ 0, 80 ]);
+    var fmt = d3.format(popDesc.numberFormat || ".02f");
+    var tooltip = d3.select("#chart").append("div").attr("class", "tooltip").text("-");
+    d3.select("#chart").append("div").selectAll("div").data(histo).enter().append("div").attr("class", "bar").style(
+            "width", function(d) {
+                return x(d.w) + "%";
+            }).text(function(d) {
+        return fmt(d.w);
+    }).on("mouseover", function(d) {
+        var text = (d.t / 60) + " - " + ((d.t + 300) / 60) + " mn: " + fmt(d.w);
+        tooltip.text(text);
+    }).on('mouseout', function(d) {
+        tooltip.text("-");
+    });
 }

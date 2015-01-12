@@ -46,7 +46,7 @@ h2 {
 	border: 1px gray;
 }
 
-.histogram div {
+.histogram div.bar {
 	font: 10px sans-serif;
 	font-weight: bold;
 	background-color: steelblue;
@@ -54,4 +54,12 @@ h2 {
 	padding: 0px;
 	margin: 1px;
 	color: black;
+}
+
+.histogram div.bar:hover {
+	background-color: orange;
+}
+
+.histogram div.tooltip {
+	background-color: #aaaaaa;
 }
