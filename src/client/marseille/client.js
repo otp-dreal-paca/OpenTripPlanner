@@ -61,6 +61,28 @@ $(function() {
         "Isochrones" : gui.isochronesLayerGroup,
     }).addTo(gui.map);
 
+    /* Custom info (transparency control) */
+    var mapinfo = L.control();
+    mapinfo.onAdd = function(map) {
+        this._div = L.DomUtil.create('div', 'mapinfo');
+        $('<div/>', {
+            text : 'Transparence'
+        }).appendTo(this._div);
+        $('<div/>').slider({
+            max : 1.0,
+            step : 0.1,
+            value: 0.5,
+            slide : function(event, ui) {
+                gui.opacity = ui.value;
+                if (gui.layer)
+                    gui.layer.setOpacity(gui.opacity);
+            }
+        }).appendTo(this._div);
+        return this._div;
+    };
+    gui.opacity = 0.5
+    mapinfo.addTo(gui.map);
+
     /* Select client-wide locale */
     otp.setLocale(otp.locale.French);
 
@@ -96,7 +118,7 @@ $(function() {
             /* Clear old layers, add a new one. */
             gui.gradientLayerGroup.clearLayers();
             gui.layer = otp.analyst.TimeGrid.getLeafletLayer(gui.timeGrid, gui.colorMap);
-            gui.layer.setOpacity(0.5);
+            gui.layer.setOpacity(gui.opacity);
             gui.gradientLayerGroup.addLayer(gui.layer);
             gui.layer.bringToFront(); // TODO Leaflet bug?
             /* Re-enable refresh button */
