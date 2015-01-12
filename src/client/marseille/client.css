@@ -64,19 +64,25 @@ h2 {
 	background-color: #aaaaaa;
 }
 
-.mapinfo {
+.mapinfo,.maplegend {
 	padding: 6px 8px;
 	font: 12px sans-serif;
 	background: rgba(255, 255, 255, 0.8);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 	border-radius: 5px;
+}
+
+.mapinfo {
 	width: 20px;
 	height: 20px;
+	background-image: url('opacity.png');
+	background-repeat: no-repeat;
 }
 
 .mapinfo:hover {
 	width: 100px;
 	height: auto;
+	background-image: none;
 }
 
 .mapinfo div {

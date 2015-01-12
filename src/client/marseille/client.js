@@ -71,7 +71,7 @@ $(function() {
         $('<div/>').slider({
             max : 1.0,
             step : 0.1,
-            value: 0.5,
+            value : 0.5,
             slide : function(event, ui) {
                 gui.opacity = ui.value;
                 if (gui.layer)
@@ -82,6 +82,26 @@ $(function() {
     };
     gui.opacity = 0.5
     mapinfo.addTo(gui.map);
+
+    /* Legend */
+    var maplegend = L.control({
+        position : 'bottomright'
+    });
+    maplegend.onAdd = function(map) {
+        this._div = L.DomUtil.create('div', 'maplegend');
+        $('<div/>', {
+            id : 'legendHeader',
+            text : 'Couleur selon la durée du trajet'
+        }).appendTo(this._div);
+        // HACK ALERT - Do NOT change the case of Width and Height below!
+        $('<canvas/>', {
+            id : 'legend',
+            Width : 300,
+            Height : 16
+        }).appendTo(this._div);
+        return this._div;
+    };
+    maplegend.addTo(gui.map);
 
     /* Select client-wide locale */
     otp.setLocale(otp.locale.French);
