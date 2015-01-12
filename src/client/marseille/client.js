@@ -57,7 +57,7 @@ $(function() {
         "OSM" : gui.osmLayer
     }, {
         "Populations" : gui.populationLayerGroup,
-        "Gradient" : gui.gradientLayerGroup,
+        "Temps de trajet" : gui.gradientLayerGroup,
         "Isochrones" : gui.isochronesLayerGroup,
     }).addTo(gui.map);
 
@@ -79,6 +79,12 @@ $(function() {
         var params1 = gui.widget1.getParameters();
         var max = params1.zDataType == "BOARDINGS" ? 5
                 : params1.zDataType == "WALK_DISTANCE" ? params1.maxWalkDistance * 1.2 : params1.maxTimeSec;
+        var zDataTypeText = "le temps de parcours";
+        if (params1.zDataType == "BOARDINGS")
+            zDataTypeText = "le nb d'embarquements";
+        else if (params1.zDataType == "WALK_DISTANCE")
+            zDataTypeText = "la distance de marche";
+        $("#legendHeader").text("Couleur selon " + zDataTypeText);
         /* Get a TimeGrid from the server. */
         gui.timeGrid = new otp.analyst.TimeGrid(params1).onLoad(function(timeGrid) {
             /* Create a ColorMap */
