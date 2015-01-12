@@ -125,6 +125,7 @@ $(function() {
             $("#refresh").prop("disabled", false);
             refreshHisto();
         });
+        gui.gradientLayerGroup.clearLayers();
 
         /* Check if we should display vector isochrones. */
         var isoEnable = $("#isoEnable").is(":checked");
@@ -139,6 +140,7 @@ $(function() {
             }
             /* Get the isochrone GeoJSON features from the server */
             gui.isochrone = new otp.analyst.Isochrone(params1, isotimes).onLoad(function(iso) {
+                gui.isochronesLayerGroup.clearLayers();
                 for (var i = 0; i < isotimes.length; i++) {
                     var isoLayer = L.geoJson(iso.getFeature(isotimes[i]), {
                         style : {
