@@ -57,8 +57,8 @@ $(function() {
         "OSM" : gui.osmLayer
     }, {
         "Populations" : gui.populationLayerGroup,
-        "Temps de trajet" : gui.gradientLayerGroup,
-        "Isochrones" : gui.isochronesLayerGroup,
+        "Temps de trajet" : gui.gradientLayerGroup
+        /* "Isochrones" : gui.isochronesLayerGroup */
     }).addTo(gui.map);
 
     /* Custom info (transparency control) */
