@@ -15,11 +15,13 @@ package org.opentripplanner.standalone;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.bsf.BSFException;
 import org.opentripplanner.analyst.request.IsoChroneSPTRendererAccSampling;
 import org.opentripplanner.analyst.request.Renderer;
 import org.opentripplanner.analyst.request.SPTCache;
@@ -55,6 +57,8 @@ import org.opentripplanner.routing.impl.MemoryGraphSource;
 import org.opentripplanner.routing.impl.RetryingPathServiceImpl;
 import org.opentripplanner.routing.services.GraphService;
 import org.opentripplanner.updater.GraphUpdaterConfigurator;
+import org.opentripplanner.scripting.impl.BSFOTPScript;
+import org.opentripplanner.scripting.impl.OTPScript;
 import org.opentripplanner.updater.PropertiesPreferences;
 import org.opentripplanner.visualizer.GraphVisualizer;
 import org.slf4j.Logger;
@@ -257,7 +261,14 @@ public class OTPConfigurator {
             return visualizer;
         } else return null;
     }
-    
+
+    public OTPScript scriptFromParameters() throws BSFException, IOException {
+        if (params.scriptFile != null) {
+            return new BSFOTPScript(getServer(), params.scriptFile);
+        } else
+            return null;
+    }
+
     /**
      * The default router lifecycle manager. Bind the services and delegates to
      * GraphUpdaterConfigurator the real-time updater startup/shutdown.
