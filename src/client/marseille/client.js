@@ -128,6 +128,8 @@ $(function() {
             zDataTypeText = "la distance de marche";
         $("#legendHeader").text("Couleur selon " + zDataTypeText);
         /* Get a TimeGrid from the server. */
+        gui.maxTimeSec = params1.maxTimeSec;
+        params1.maxTimeSec += 300;
         gui.timeGrid = new otp.analyst.TimeGrid(params1).onLoad(function(timeGrid) {
             /* Create a ColorMap */
             gui.colorMap = new otp.analyst.ColorMap({
@@ -185,7 +187,7 @@ $(function() {
             return;
         /* Display histogram using D3 */
         var scorer = new otp.analyst.Scoring();
-        var histo = scorer.histogram(gui.timeGrid, gui.population, 0, 3600, 300);
+        var histo = scorer.histogram(gui.timeGrid, gui.population, 0, gui.maxTimeSec, 300);
         displayHistogram(histo, gui.populationDescriptor);
     }
 
