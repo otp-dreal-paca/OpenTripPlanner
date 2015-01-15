@@ -100,7 +100,7 @@ public class GenericAStar implements SPTService { // maybe this should be wrappe
         runState = new RunState( options, terminationStrategy );
         runState.rctx = options.getRoutingContext();
         // TODO this is a hackish way of communicating which mode we are in (since search mode is currently server-wide)
-        runState.spt = options.longDistance ?
+        runState.spt = options.longDistance || options.batch ?
                 new WeightOnlyShortestPathTree(runState.options) : new MultiShortestPathTree(runState.options);
         runState.heuristic = options.batch ?
                 new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
