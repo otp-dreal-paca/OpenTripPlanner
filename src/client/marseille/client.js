@@ -56,7 +56,7 @@ $(function() {
         "Transport" : gui.otLayer,
         "OSM" : gui.osmLayer
     }, {
-        "Populations" : gui.populationLayerGroup,
+        "Points d'intérêts" : gui.populationLayerGroup,
         "Temps de trajet" : gui.gradientLayerGroup
         /* "Isochrones" : gui.isochronesLayerGroup */
     }).addTo(gui.map);
