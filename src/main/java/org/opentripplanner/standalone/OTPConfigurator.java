@@ -31,6 +31,7 @@ import org.opentripplanner.graph_builder.impl.EmbeddedConfigGraphBuilderImpl;
 import org.opentripplanner.graph_builder.impl.GtfsGraphBuilderImpl;
 import org.opentripplanner.graph_builder.impl.PruneFloatingIslands;
 import org.opentripplanner.graph_builder.impl.DirectTransferGenerator;
+import org.opentripplanner.graph_builder.impl.ShapefileCarSpeedGraphBuilderImpl;
 import org.opentripplanner.graph_builder.impl.TransitToStreetNetworkGraphBuilderImpl;
 import org.opentripplanner.graph_builder.impl.TransitToTaggedStopsGraphBuilderImpl;
 import org.opentripplanner.graph_builder.impl.ned.ElevationGraphBuilderImpl;
@@ -140,6 +141,7 @@ public class OTPConfigurator {
         List<File> osmFiles =  Lists.newArrayList();
         File configFile = null;
         File demFile = null;
+        File carSpeedFile = null;
         /* For now this is adding files from all directories listed, rather than building multiple graphs. */
         for (File dir : params.build) {
             LOG.info("Searching for graph builder input files in {}", dir);
@@ -171,6 +173,10 @@ public class OTPConfigurator {
                         LOG.info("Found CONFIG file {}", file);
                         configFile = file;
                     }
+                    break;
+                case CARSPEED:
+                    LOG.info("Found car speed file {}", file);
+                    carSpeedFile = file;
                     break;
                 case OTHER:
                     LOG.debug("Skipping file '{}'", file);
@@ -237,6 +243,11 @@ public class OTPConfigurator {
             ElevationGridCoverageFactory gcf = new GeotiffGridCoverageFactoryImpl(demFile);
             GraphBuilder elevationBuilder = new ElevationGraphBuilderImpl(gcf);
             graphBuilder.addGraphBuilder(elevationBuilder);
+        }
+        if (carSpeedFile != null) {
+            ShapefileCarSpeedGraphBuilderImpl carSpeedGraphBuilder = new ShapefileCarSpeedGraphBuilderImpl();
+            carSpeedGraphBuilder.shapefile = carSpeedFile;
+            graphBuilder.addGraphBuilder(carSpeedGraphBuilder);
         }
         graphBuilder.serializeGraph = ( ! params.inMemory ) || params.preFlight;
         return graphBuilder;
@@ -321,7 +332,7 @@ public class OTPConfigurator {
      * Represents the different types of input files for a graph build.
      */
     private static enum InputFileType {
-        GTFS, OSM, DEM, CONFIG, OTHER;
+        GTFS, OSM, DEM, CONFIG, CARSPEED, OTHER;
         public static InputFileType forFile(File file) {
             String name = file.getName();
             if (name.endsWith(".zip")) {
@@ -337,6 +348,7 @@ public class OTPConfigurator {
             if (name.endsWith(".osm.xml")) return OSM;
             if (name.endsWith(".tif")) return DEM;
             if (name.equals("Embed.properties")) return CONFIG;
+            if (name.equalsIgnoreCase("carspeed.shp")) return CARSPEED;
             return OTHER;
         }
     }
