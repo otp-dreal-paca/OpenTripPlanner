@@ -26,7 +26,7 @@ $(function() {
     gui.map = L.map('map', {
         minZoom : 10,
         maxZoom : 18,
-    }).setView(L.latLng(43.297, 5.370), 12);
+    }).setView(L.latLng(43.297, 5.370), 11);
 
     /* Add OSM/OpenTransport layers. TODO Add MapBox layer. */
     gui.osmLayer = new L.TileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
