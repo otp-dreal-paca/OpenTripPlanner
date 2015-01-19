@@ -370,19 +370,20 @@ public class DefaultWayPropertySetSource implements WayPropertySetSource {
                 StreetTraversalPermission.BICYCLE_AND_DRIVING, 2, 2);
 
         /*
-         * Automobile speeds in the United States: Based on my (mattwigway) personal experience, primarily in California
+         * Estimated default automobile speeds, based on data from DREAL PACA for the Marseille
+         * region. This code is NOT MEANT to be integrated in master OTP.
          */
-        setCarSpeed(props, "highway=motorway", 29); // 29 m/s ~= 65 mph
-        setCarSpeed(props, "highway=motorway_link", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=trunk", 24.6f); // ~= 55 mph
-        setCarSpeed(props, "highway=trunk_link", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=primary", 20); // ~= 45 mph
-        setCarSpeed(props, "highway=primary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=secondary", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=secondary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=tertiary", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=tertiary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=living_street", 2.2f); // ~= 5 mph
+        setCarSpeed(props, "highway=motorway", 25f); // ~90 km/h
+        setCarSpeed(props, "highway=motorway_link", 16.67f); // ~60 km/h
+        setCarSpeed(props, "highway=trunk", 22.22f); // ~80 km/h
+        setCarSpeed(props, "highway=trunk_link", 16.67f); // ~60 km/h
+        setCarSpeed(props, "highway=primary", 16.67f); // ~60 km/h
+        setCarSpeed(props, "highway=primary_link", 16.67f); // ~60 km/h
+        setCarSpeed(props, "highway=secondary", 13.89f); // ~50 km/h
+        setCarSpeed(props, "highway=secondary_link", 13.89f); // ~50 km/h
+        setCarSpeed(props, "highway=tertiary", 13.89f); // ~50 km/h
+        setCarSpeed(props, "highway=tertiary_link", 13.89f); // ~50 km/h
+        setCarSpeed(props, "highway=living_street", 5.56f); // ~20 km/h
 
         // generally, these will not allow cars at all, but the docs say
         // "For roads used mainly/exclusively for pedestrians . . . which may allow access by
