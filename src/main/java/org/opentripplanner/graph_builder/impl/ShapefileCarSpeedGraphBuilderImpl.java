@@ -145,6 +145,7 @@ public class ShapefileCarSpeedGraphBuilderImpl implements GraphBuilder {
                         nSkippedNoSpeed, nSkippedNoGeom);
             } finally {
                 results.close();
+                dataStore.dispose();
             }
 
         } catch (Exception e) {
