@@ -17,7 +17,7 @@ div#toolbox {
 	height: 100%;
 	width: 320px;
 	float: left;
-	background: #ddd;
+	background: #8ed1ec;
 	margin: 0;
 	padding: 0;
 	padding-left: 0.5em;
@@ -28,7 +28,7 @@ div#toolbox {
 h1 {
 	font-size: 110%;
 	font-weight: bold;
-	color: #333333;
+	color: white;
 }
 
 h2 {
