@@ -58,7 +58,7 @@ $(function() {
     }, {
         "Points d'intérêts" : gui.populationLayerGroup,
         "Temps de trajet" : gui.gradientLayerGroup
-        /* "Isochrones" : gui.isochronesLayerGroup */
+    /* "Isochrones" : gui.isochronesLayerGroup */
     }).addTo(gui.map);
 
     /* Custom info (transparency control) */
@@ -89,6 +89,10 @@ $(function() {
     });
     maplegend.onAdd = function(map) {
         this._div = L.DomUtil.create('div', 'maplegend');
+        var popLegend = $('<div/>', {
+            id : 'legendPop',
+        }).appendTo(this._div);
+        popLegend.append("<span class='circleMarker'/><span id='legendPopLabel'>")
         $('<div/>', {
             id : 'legendHeader',
             text : 'Couleur selon la durée du trajet'
@@ -211,7 +215,10 @@ $(function() {
             gui.population.onLoad(function() {
                 refreshHisto();
                 gui.populationLayerGroup.clearLayers();
+                $('#legendPop').hide();
                 if (gui.population.size() < 1000) {
+                    $('#legendPopLabel').text(gui.populationDescriptor.name);
+                    $('#legendPop').show();
                     for (var i = 0; i < gui.population.size(); i++) {
                         var ind = gui.population.get(i);
                         var circleMarker = L.circleMarker(ind.location, {
@@ -352,17 +359,23 @@ function initPopulations(callback) {
             });
         }
     };
-    otp.analyst.Population.listServerPointSets(function(pointsets) {
-        $.each(pointsets, function(index, pointset) {
-            ret[pointset.id] = {
-                name : pointset.id,
-                load : function() {
-                    return loadFromServer(pointset.id);
-                }
-            };
+    if (false) {
+        otp.analyst.Population.listServerPointSets(function(pointsets) {
+            $.each(pointsets, function(index, pointset) {
+                ret[pointset.id] = {
+                    name : pointset.id,
+                    load : function() {
+                        return loadFromServer(pointset.id);
+                    }
+                };
+            });
+            callback(ret);
         });
-        callback(ret);
-    });
+    } else {
+        setTimeout(function() {
+            callback(ret);
+        }, 100);
+    }
 }
 
 function displayHistogram(histo, popDesc) {
