@@ -184,6 +184,7 @@ $(function() {
     }
 
     function refreshHisto() {
+        var cumul = $("#histoCumul").is(":checked");
         d3.select("#chart").selectAll("div").remove();
         if (!gui.population || !gui.timeGrid.isLoaded())
             return;
@@ -192,6 +193,14 @@ $(function() {
         /* Display histogram using D3 */
         var scorer = new otp.analyst.Scoring();
         var histo = scorer.histogram(gui.timeGrid, gui.population, 0, gui.maxTimeSec, 300);
+        if (cumul) {
+            var histoC = histo.slice(0);
+            s = 0;
+            for (var i = 0; i < histoC.length; i++) {
+                s += histoC[i].w;
+                histoC[i].w = s;
+            }
+        }
         displayHistogram(histo, gui.populationDescriptor);
     }
 
@@ -199,6 +208,7 @@ $(function() {
     gui.widget1.onRefresh(refresh);
     $("#refresh").click(refresh);
     $("#isoEnable").click(refresh);
+    $("#histoCumul").click(refreshHisto);
     /* Refresh to force an initial load. */
     gui.widget1.refresh();
 
