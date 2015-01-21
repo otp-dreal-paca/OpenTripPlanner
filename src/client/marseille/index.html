@@ -45,8 +45,8 @@
 		</p>
 
 		<h2>Indicateurs</h2>
-		<select id="populations"></select><br/>
-		<label><input id="histoCumul" type="checkbox" /> Cumul</label>
+		<select id="populations"></select><br /> <label><input
+			id="histoCumul" type="checkbox" /> Cumul</label>
 		<p>Histogramme (tranche 5mns):</p>
 		<div id="chart" class="histogram"></div>
 
@@ -55,159 +55,146 @@
 
 	<div id="aboutContent" title="À propos" style="display: none;">
 		<p>
-			Ce service &laquo;&nbsp;Accessibilit&eacute; au territoire et
-			desserte des transports dans la m&eacute;tropole
-			Aix-Marseille-Provence&nbsp;&raquo; est mis en place &agrave;
-			l'initiative de la <a
+			Ce service «&nbsp;Accessibilité au territoire et desserte des
+			transports dans la métropole Aix-Marseille-Provence&nbsp;» est mis en
+			place à l'initiative de la <a
 				href="http://www.paca.developpement-durable.gouv.fr/les-transports-en-paca-r139.html">DREAL
-				PACA</a>, qui anime aupr&egrave;s de la mission M&eacute;tropole
-			attach&eacute;e &agrave; la Pr&eacute;fecture la r&eacute;flexion sur
-			l'organisation des d&eacute;placements dans la m&eacute;tropole
-			Marseille Provence. <a
+				PACA</a>, , qui anime auprès de la mission Métropole attachée à la
+			Préfecture la réflexion sur l'organisation des déplacements dans la
+			métropole Marseille Provence. <a
 				href="http://mim.cete-aix.fr/article.php3?id_article=360">Pour
 				en savoir plus sur le projet.</a>
 		</p>
-		<p>L'objectif est de donner &agrave; l'utilisateur une id&eacute;e
-			de la desserte en transports autour d'un point du territoire sur le
-			territoire m&eacute;tropolitain, en affichant une carte des zones
-			atteignables en fonction du temps disponible, et en calculant des
-			indicateurs qui comptent le nombre de services (services publics,
-			emplois...) qu'un usager peut atteindre depuis ce point (en 1/2
-			heure, par exemple). On peut ainsi comparer diff&eacute;rents points
-			du territoire, mais aussi comparer en un point l'accessibilit&eacute;
-			en fonction du mode de transport utilis&eacute;, ou de l'heure de la
-			journ&eacute;e par exemple.</p>
+		<p>
+			L'objectif est de <b>donner à l'utilisateur une idée de la
+				desserte en transports autour d'un point sur le territoire
+				métropolitain</b>, en affichant une carte des zones atteignables en
+			fonction du temps disponible, et en calculant des indicateurs qui
+			comptent le nombre de services (services publics, emplois...) qu'un
+			usager peut atteindre depuis ce point (en 1/2 heure, par exemple). On
+			peut ainsi comparer différents points du territoire, mais aussi
+			comparer en un point l'accessibilité en fonction du mode de transport
+			utilisé, ou de l'heure de la journée par exemple.
+		</p>
 		<p>L'application s'appuie sur:</p>
 		<ul>
-			<li>le logiciel libre de recherche d'itin&eacute;raires
-				multimodaux <a
+			<li>le logiciel libre de recherche d'itinéraires multimodaux <a
 				href="https://github.com/opentripplanner/OpenTripPlanner/wiki"><b>Open
-						Trip Planner</b> (OTP)</a>, qui est dot&eacute; d'un module Analyst
-				permettant de produire des cartes isochrones interactives et de
-				calculer des indicateurs d'accessibilit&eacute; transport.
+						Trip Planner</b> (OTP)</a>, qui est doté d'un module Analyst permettant de
+				produire des cartes isochrones interactives et de calculer des
+				indicateurs d'accessibilité transport.
 			</li>
-			<li>des donn&eacute;es r&eacute;utilisables:
+			<li>des données réutilisables:
 				<ul>
 					<li>l'offre de transport collectif (<a
 						href="http://www.lepilote.com/presentation/?rub_code=92">LePilote</a>
-						pour les transports urbains et d&eacute;partementaux et <a
+						pour les transports urbains et départementaux et <a
 						href="http://ressources.data.sncf.com/explore/dataset/sncf-ter-gtfs/">SNCF</a>
 						pour les TER)
 					</li>
-					<li>le r&eacute;seau routier disponible par la base de
-						donn&eacute;es collaborative <a
-						href="http://www.openstreetmap.org/about">Open Street Map</a>
+					<li>le réseau routier disponible par la base de données
+						collaborative <a href="http://www.openstreetmap.org/about">Open
+							Street Map</a>
 					</li>
-					<li>des donn&eacute;es avec lesquelles on peut calculer un
-						score d'accessibilit&eacute; depuis tout point du territoire : <a
+					<li>des données avec lesquelles on peut calculer un score
+						d'accessibilité depuis tout point du territoire&nbsp;: <a
 						href="http://www.insee.fr/fr/themes/detail.asp?reg_id=0&amp;ref_id=donnees-carroyees&amp;page=donnees-detaillees/donnees-carroyees/donnees-carroyees-200m.htm">recensement
-							de la population Insee</a>, agr&eacute;gation des emplois
-						(estim&eacute;s en agr&eacute;geant des donn&eacute;es Sirene avec
-						la <a
+							de la population Insee</a>, agrégation des emplois (estimés en
+						agrégeant des données de localisation des emplois avec la <a
 						href="https://www.data.gouv.fr/fr/datasets/base-d-adresses-nationale-ouverte-bano/">base
-							Adresses nationale</a>), points d'int&eacute;r&ecirc;t
-						(lyc&eacute;es, mus&eacute;es, etc.)
+							Adresses nationale</a>), points d'intérêt (lycées, musées, etc.)
 					</li>
 				</ul>
 			</li>
 		</ul>
-		<p>Apr&egrave;s une premi&egrave;re version mise en ligne
-			d&eacute;but 2014, des am&eacute;liorations et de nouveaux
-			d&eacute;veloppements sont en cours d&eacute;but 2015. La prestation
-			a &eacute;t&eacute; confi&eacute;e &agrave; un groupement
-			r&eacute;unissant les soci&eacute;t&eacute;s Nicaya, Mecatran,
-			Modulaweb et Conveyal, qui contribuent activement &agrave;
+		<p>Après une première version mise en ligne début 2014, des
+			améliorations et de nouveaux développements sont en cours début 2015.
+			La prestation a été confiée à un groupement réunissant les sociétés
+			Nicaya, Mecatran, Modulaweb et Conveyal, qui contribuent activement à
 			OpenTripPlanner.</p>
 		<h2>Comment utiliser l'application:</h2>
 		<p>
-			D&eacute;placez avec la souris le pointeur bleu dans la carte pour
-			d&eacute;finir <b>le point d'origine</b>: la carte se met &agrave;
-			jour et affiche alors les surfaces isochrones indiquant les zones que
-			l'on peut atteindre en moins d'une heure (cette dur&eacute;e est
-			param&eacute;trable) depuis l'origine choisie (selon des codes
-			couleurs pour les dur&eacute;es l&eacute;gend&eacute;s en bas
-			&agrave; droite de la carte), selon le mode de transport et selon le
-			jour / l'heure.
+			Déplacez avec la souris le pointeur bleu dans la carte pour définir <b><em>le
+					point d'origine</em></b>: la carte se met à jour et affiche alors les
+			surfaces isochrones indiquant les zones que l'on peut atteindre en
+			moins d'une heure (cette durée est paramétrable) depuis l'origine
+			choisie (selon des codes couleurs pour les durées légendés en bas à
+			droite de la carte), selon le mode de transport et selon le jour /
+			l'heure.
 		</p>
 		<p>
-			La carte comporte en haut &agrave; gauche des boutons +/- pour <b>changer
-				l'&eacute;chelle</b> (on peut <b>d&eacute;placer la carte</b> en
-			glissant/d&eacute;plaçant la souris) et en haut &agrave; droite un
-			bouton pour choisir les couches affich&eacute;es: fond de plan OSM
-			Transport ou OSM standard, affichages des temps de trajet (surfaces
-			en couleur) ou des contours pour certaines dur&eacute;es
-			(isochrones), et des points d'int&eacute;r&ecirc;t
-			(&laquo;&nbsp;populations&nbsp;&raquo;) utilis&eacute;s pour le
-			calcul des indicateurs, ainsi qu'un bouton pour r&eacute;gler la <i>transparence</i>
-			des couches. Les calculs peuvent prendre quelques secondes &agrave;
-			s'afficher.
+			La carte comporte en haut à gauche des boutons ± pour <b><u>changer
+					l'échelle</u></b> (on peut <b><u>déplacer la carte</u></b> en
+			glissant/déplaçant la souris) et en haut à droite un bouton pour <b>choisir
+				les couches affichées</b>: fond de plan OSM Transport ou OSM standard,
+			affichages des temps de trajet (surfaces en couleur) ou des contours
+			pour certaines durées (isochrones), et des points d'intérêt («
+			populations ») utilisés pour le calcul des indicateurs, ainsi qu'un
+			bouton pour régler la <u>transparence</u> des couches.
 		</p>
-		<p>Les r&eacute;sultats d&eacute;pendent des options que l'on
-			d&eacute;finit dans la menu de la partie gauche :</p>
+		<p>Les calculs peuvent prendre quelques secondes à s'afficher. Les
+			résultats dépendent des options que l'on définit dans la menu de la
+			partie gauche&nbsp;:</p>
 		<ul>
-			<li><b>D&eacute;part &agrave; (par d&eacute;faut) / Arriver
-					&agrave;</b>: indique l'heure et le jour pour le calcul depuis le point
-				Origine (ou vers ce point);</li>
-			<li><b>Mode</b>: choix des modes de transport: (pour Voiture -
-				les donn&eacute;es ne tiennent pas compte de la congestion, dans la
-				version actuelle)</li>
-			<li><b>Dur&eacute;e max.</b>: extension maximale des surfaces
-				isochrones calcul&eacute;es (par d&eacute;faut 1H);</li>
-			<li>Pour les modes Transport Collectif, les param&egrave;tres
-				suppl&eacute;mentaires <b>Marche max. / Vitesse</b> permettent de
-				d&eacute;finir la distance maximale de marche au total, et la
-				vitesse de marche;
+			<li><b>Départ à (par défaut) / Arriver à</b>: indique l'heure et
+				le jour pour le calcul depuis le point Origine (ou vers ce point);</li>
+			<li><b>Mode</b> (pour Voiture - les données tiennent compte de
+				la congestion, uniquement en heure de pointe dans la version
+				actuelle)</li>
+			<li><b>Durée max.</b>: extension maximale des surfaces
+				isochrones calculées (par défaut 1H);</li>
+			<li>Pour les modes Transport Collectif, les paramètres
+				supplémentaires <b>Marche max. / Vitesse</b> permettent de définir
+				la distance maximale de marche au total, et la vitesse de marche;
 			</li>
 			<li>Pour les modes Transport Collectif , il est possible de
-				choisir d'autres <b>&laquo;Donn&eacute;es &agrave;
-					afficher&raquo;</b> que le temps de parcours: nombre d'embarquements
-				TC, distance de marche.
+				choisir d'autres <b>«&nbsp;Données à afficher&nbsp;»</b> que le
+				temps de parcours: nombre d'embarquements TC, distance de marche.
 			</li>
-			<li>le bouton <b>Rafra&icirc;chir</b> r&eacute;actualise la
-				carte.
+			<li>le bouton <b>Rafraîchir</b> réactualise la carte.
 			</li>
 
 		</ul>
 		<p>
-			Le menu <b>&laquo;</b><b>Outils</b><b>&raquo;</b> permet:
+			Le menu <b>«Outils»</b> permet:
 		</p>
 		<ul>
 			<li>d'afficher les contours isochrones atteignables en x minutes
-				depuis le point de d&eacute;part d'origine, (par d&eacute;faut 30;60
-				- s&eacute;parer les dur&eacute;es par un point-virgule); cochez la
-				cache 'Afficher' pour fait appara&icirc;tre ces contours (en trait
-				bleu) sur la carte.</li>
+				depuis le point de départ d'origine, (par défaut 30;60 - séparer les
+				durées par un point-virgule); cochez la cache 'Afficher' pour fait
+				apparaître ces contours (en trait bleu) sur la carte.</li>
 			<li>d'exporter une image des surfaces isochrones au format PNG
-				ou GEOJSON, qui peut &ecirc;tre ensuite utilis&eacute;e avec des
-				logiciels de bureautique ou de g&eacute;omatique.</li>
+				ou GEOJSON, qui peut être ensuite utilisée avec des logiciels de
+				bureautique (Office) ou de géomatique (SIG).</li>
 		</ul>
 		<p>
-			Le menu <b>In</b><b>dicateur</b><b>s</b> permet de compter le nombre
-			que l'on peut atteindre depuis le point origine choisi sur la carte
-			(avec les options de transport d&eacute;finies en haut du menu :
-			jour, heures, mode de transport...). La liste d&eacute;roulante
-			comprend pour l'instant: population, emplois, lyc&eacute;es,
-			coll&egrave;ges, m&eacute;diath&egrave;ques, centres culturels,
-			mus&eacute;es.
+			Le menu <b>Indicateurs</b> permet de compter le nombre que l'on peut
+			atteindre depuis le point origine choisi sur la carte (avec les
+			options de transport définies en haut du menu : jour, heures, mode de
+			transport...). La liste déroulante comprend pour l'instant:
+			population, emplois, lycées, collèges, médiathèques, centres
+			culturels, musées.
 		</p>
-		<p>Par exemple, si on choisit lyc&eacute;e, le score
-			calcul&eacute; correspond au nombre de lyc&eacute;es atteignables en
-			moins de 5, 10, 15... 60 minutes depuis le point origine (passez la
-			souris sur l'histogramme).</p>
-		<p>D'autres am&eacute;liorations sont pr&eacute;vues:</p>
+		<p>Par exemple, si on choisit «lycée», le score calculé correspond
+			au nombre de lycées atteignables en moins de 5, 10, 15... 60 minutes
+			depuis le point origine (passez la souris sur l'histogramme).</p>
+		<p>D'autres améliorations sont prévues d'ici février 2015&nbsp;:</p>
 		<ul>
-			<li>itin&eacute;raires en voiture + TC via un parc-relais</li>
-			<li>prise en compte de la congestion routi&egrave;re pour les
-				d&eacute;placements en voiture</li>
-			<li>ajout de nouveaux points d'int&eacute;r&ecirc;t pour le
-				calcul des scores d'accessibilit&eacute;</li>
-			<li>cartes comparant les modes de transport, cartes
-				repr&eacute;sentant les fr&eacute;quences des dessertes en TC...</li>
+			<li>itinéraires en voiture + TC via un parc-relais
+				(expérimental, tous les parcs-relais n'ont pas encore été
+				renseignés)</li>
+			<li>prise en compte de la congestion routière pour les
+				déplacements en voiture</li>
+			<li>ajout de nouveaux points d'intérêt pour le calcul des scores
+				d'accessibilité</li>
+			<li>cartes comparant les modes de transport, cartes représentant
+				les fréquences des dessertes en TC, «score» d'accessibilité...</li>
 		</ul>
 		<p>
-			N'h&eacute;sitez pas &agrave; <a
+			Cet outil est encore développement, il sera amélioré en fonction des
+			retours des utilisateurs. N'hésitez pas à <a
 				href="mailto:Frederique.Reffet@developpement-durable.gouv.fr,pat.gendre@cerema.fr?subject=OTP+Analyst+M&eacute;tropole+Marseillaise">nous
-				contacter</a> si l'outil vous int&eacute;resse! Nous vous en remercions
+				contacter</a> si l'outil vous intéresse&nbsp;! Nous vous en remercions
 			d'avance.
 		</p>
 	</div>
