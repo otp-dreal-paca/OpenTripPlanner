@@ -21,6 +21,7 @@ $(function() {
     var gui = {};
     /* Our reference point for diff mode */
     gui.GRID_ORIGIN = L.latLng(43.3, 5.4);
+    gui.CAR_OFFSET = 300;
 
     /* Initialize a leaflet map */
     gui.map = L.map('map', {
@@ -134,7 +135,10 @@ $(function() {
         /* Get a TimeGrid from the server. */
         gui.maxTimeSec = params1.maxTimeSec;
         params1.maxTimeSec += 300;
-        gui.timeGrid = new otp.analyst.TimeGrid(params1).onLoad(function(timeGrid) {
+        var tgOpts = {
+            zOffset : (params1.mode.indexOf("CAR") > -1 ? gui.CAR_OFFSET : 0)
+        }
+        gui.timeGrid = new otp.analyst.TimeGrid(params1, tgOpts).onLoad(function(timeGrid) {
             /* Create a ColorMap */
             gui.colorMap = new otp.analyst.ColorMap({
                 max : max,
