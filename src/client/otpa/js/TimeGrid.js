@@ -23,9 +23,12 @@ otp.analyst.TimeGrid = otp.Class({
     /**
      * Constructor.
      */
-    initialize : function(requestParams) {
+    initialize : function(requestParams, options) {
         // We do the base64 encoding on the server as
         // doing it on the client is painful and not portable.
+        this.options = $.extend({
+            zOffset : 0
+        }, options);
         var routerId = requestParams.routerId;
         if (!routerId || 0 === str.length)
             routerId = 'default';
@@ -151,7 +154,7 @@ otp.analyst.TimeGrid = otp.Class({
         var lng = xIndex * this.cellSize.lng + this.gridBase.lng;
         var lat = yIndex * this.cellSize.lat + this.gridBase.lat;
         return {
-            z : (r + (g << 8)) / this.zUnit,
+            z : (r + (g << 8)) / this.zUnit + this.options.zOffset,
             d : b / 100 * this.precisionMeters,
             c : {
                 lng : lng,
