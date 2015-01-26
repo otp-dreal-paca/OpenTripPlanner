@@ -15,10 +15,37 @@
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push([ 'trackPageView' ]);
+    _paq.push([ 'enableLinkTracking' ]);
+    (function() {
+        var u = "//62.210.125.178/piwik/";
+        _paq.push([ 'setTrackerUrl', u + 'piwik.php' ]);
+        _paq.push([ 'setSiteId', 2 ]);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<!-- End Piwik Code -->
+
 <link rel="stylesheet" type="text/css" href="client.css" />
 </head>
 
 <body>
+	<!-- Piwik -->
+	<noscript>
+		<p>
+			<img src="//62.210.125.178/piwik/piwik.php?idsite=2"
+				style="border: 0;" alt="" />
+		</p>
+	</noscript>
+	<!-- End Piwik Code -->
 	<div id="toolbox">
 		<h1>Accessibilité au territoire et desserte des transports dans
 			la métropole Aix-Marseille-Provence</h1>
