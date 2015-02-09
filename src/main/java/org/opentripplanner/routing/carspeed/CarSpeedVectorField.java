@@ -45,7 +45,7 @@ public class CarSpeedVectorField {
 
     private static final double RADIUS_MULT = 3.0;
 
-    private static final double W0 = 0.1;
+    private static final double W0 = 6.0;
 
     private SpatialIndex spatialIndex;
 
@@ -161,11 +161,19 @@ public class CarSpeedVectorField {
                 double uLen = u.distance(new Coordinate(0, 0));
                 u.x /= uLen;
                 u.y /= uLen;
+                double wSpeed2 = 0.0, wSum2 = 0.0;
                 for (SpeedVector sp : vectors) {
                     double w = weight(sp.location, m, sp.direction, u);
-                    wSpeed += w * sp.speed;
-                    wSum += w;
+                    wSpeed2 += w * sp.speed;
+                    wSum2 += w;
                 }
+                // Clamp weight for this point to 1
+                if (wSum2 > 1) {
+                    wSpeed2 = wSpeed2 / wSum2;
+                    wSum2 = 1;
+                }
+                wSpeed += wSpeed2;
+                wSum += wSum2;
                 wSpeed += W0 * e.getCarSpeed();
                 wSum += W0;
             }
